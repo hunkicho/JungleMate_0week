@@ -1,9 +1,7 @@
 {% extends 'main.html' %}
 
 {% block script %}
-  function boardView(_id){
-    location.href='/boardView/'+_id
-  }
+
 {% endblock %}
 
 
@@ -27,11 +25,11 @@
     {% if board_list%} 
         <div class="boards">
             {% for board in board_list%}
-                <div class="card card-body" onClick="boardView(`{{'board.id'}}`)">
-                    <p class="card-title" id="title">{{board.name}}</p>
-                    <p class="card-meal" id="meal">{{board.meal}}</p>
-                    <p class="card-hCounter" id="hCounter">{{board.hCounter}}</p>
-                    <p class="card-time" id="time">{{board.time}}</p>
+                <div class="card card-body" onClick="boardView(`{{'board._id'}}`)">
+                    <p class="card-title" id="title">{{board.subject}}</p>
+                    <p class="card-meal" id="meal">{{board.content}}</p>
+                    <p class="card-hCounter" id="hCounter">{{board.writer}}</p>
+                    <!-- <p class="card-time" id="time">{{board.time}}</p> -->
                 </div>
             {% endfor %}
         </div>

@@ -22,17 +22,17 @@ def main():
     #session.pop('id',None)
     sess_check() #세션체크 메소드
     sess_id = session['id'] #세션 체크
-    
-    return render_template("main.html", boards=board, id = sess_id)
+    board = obj_decode(list(db.board.find({})))
+
+    return render_template("main.html", board_list=board, id = sess_id)
 
 
-@app.route('/boardView')
-def boardView():
+@app.route('/boardView/<board_id>')
+def boardView(board_id):
     sess_check() #세션체크 메소드
     sess_id = session['id'] #세션 체크
-    print(sess_id)
 
-    obj_id = ObjectId("635772aa45ab29b1239a8d8f")
+    obj_id = ObjectId(board_id)
     result = db.board.find_one({'_id' : obj_id})
     join_list = obj_decode(list(db.join.find({'board_id' : obj_id})))
 
@@ -62,9 +62,10 @@ def boardView():
         btn_route = "/join_put"
 
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
+    print(comment_list)
 
 
-    return render_template('boardview.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list)
+    return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list)
 
 @app.route('/join_put', methods=['POST'])
 def join_put():
@@ -75,7 +76,7 @@ def join_put():
     insert_input = {'user_id' : sess_id, 'board_id' : receive_board_id}
     db.join.insert_one(insert_input)
 
-    return redirect(url_for('boardView'))
+    return redirect(url_for('boardView', board_id = str(receive_board_id)))
 
 @app.route('/join_delete', methods=['POST'])
 def join_delete():
@@ -86,7 +87,7 @@ def join_delete():
     delete_input = {'user_id' : sess_id, 'board_id' : receive_board_id}
     db.join.delete_many(delete_input)
 
-    return redirect(url_for('boardView'))
+    return redirect(url_for('boardView', board_id = str(receive_board_id)))
 
 @app.route('/comment_put', methods=['POST'])
 def comment_put():
@@ -111,6 +112,13 @@ def comment_delete(comment_id):
 
     return redirect(url_for('boardView'))
 
+@app.route('/go_create_page',  methods=['POST'])
+def go_create_page():
+    sess_check() #세션체크 메소드
+    sess_id = session['id'] #세션 체크
+
+    return render_template('create.html')
+
 
 @app.route('/login',  methods=['POST','GET'])
 def login():
@@ -125,7 +133,7 @@ def login():
     else:
         print("성공")  #일치하는 값이 있으면
         session['id'] = result['id'] #세션에 아이디로 정보 저장
-        return main() #메인페이지로 이동
+        return redirect(url_for('main')) #메인페이지로 이동
 
 def sess_check():
     sess_id = session['id'] #세션값 가져오기
@@ -149,9 +157,12 @@ def create_room():
     people_receive = request.form['people_give']    
     comment_receive = request.form['comment_give']
 
-    db.room_info.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive})
+    result = db.board.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive}).inserted_id
+    getId = db.board.find_one(result)
 
-    return boardView()  
+    db.join.insert_one({'user_id':'test3','board_id':getId['_id']})
+    
+    return redirect(url_for('boardView', board_id = str(getId['_id'])))
 
 
 if __name__ == '__main__':
