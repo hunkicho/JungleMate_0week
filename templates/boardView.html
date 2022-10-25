@@ -1,0 +1,91 @@
+
+
+<html>
+    <head>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+        crossorigin="anonymous">
+
+        <!-- JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+        <script>
+            function comment_delete(_id){
+                location.href = '/comment_delete/' + _id
+            }
+        </script>
+
+    </head>
+    <style>
+        hr { border-top:1px solid #F12121 } 
+    </style>
+    <body>
+        <div id="main">
+            <div id="image">
+
+            </div>
+            <div id="article">
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col-auto d-none d-lg-block">
+                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">صورة مصغرة</text></svg>
+                        </div>  
+                        <div class="col p-4 flex-column position-static">
+                            <div class="lh-base me-md-2">
+                                <h3 class="mb-0">{{ result['subject'] }}</h3>
+                            </div>
+                            <hr>
+                            <div class="lh-base d-inline-block" >
+                                <div class="d-inline-block mr-5">
+                                    <h5>모집인원 : {{result['count']}} 명</h5>
+                                </div>
+                                <div class="d-inline-block">
+                                    <h5>모집시간 : {{result['count']}} </h5>
+                                </div>
+                            </div>
+                            <hr>
+                            <strong class="d-inline-block mb-0 text-success">본문{{ result['content'] }}</strong>
+                            <hr>
+                            <div class="mb-1 text-muted">
+                                참여자
+                                {% for item in join_list %}
+                                <div class="d-inline-block bgGreen">
+                                    {{ item['user_id'] }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <hr>
+                            <form name="join_status" action="{{ btn_route }}" method="post">
+                                <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
+                                <button type="submit" class="{{ btn_color }}">{{ btn_text }}</button>
+                            </form>
+                            <br>
+                            <br>
+                            <div id="comment">
+                                <h3>댓글</h3>
+                                <hr>
+                                {% for item in comment_list %}
+                                <div id="">
+                                    {{ item['comment'] }}
+                                    {% if id == item['user_id'] %}
+                                    <span onclick="comment_delete(`{{ item['_id'] }}`)">삭제</span>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                                <form name="comment_put" action="/comment_put" method="post">
+                                    <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
+                                    <textarea name="comment" class="form-control d-inline-block" placeholder="댓글 입력하기"></textarea>
+                                    <button type="submit" class="{{ btn_color }} btn_sm d-inline-block">작성</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </body>
+</html>
