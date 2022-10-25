@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block script %}
+  function boardView(_id){
+    location.href='/boardView/'+_id
+  }
+{% endblock %}
+
+
+{% block boards %}
+<div class="center">
+    <div class="center_head">
+        <div class="homeIMG">
+            <a href="/home">
+                <img src="">JUNGLE MATE</img>
+            </a>
+        </div>
+        
+        <div class="input-group">
+                <input type="text" id="search_kw" class="form-control" value="{{ kw or '' }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+                </div>
+        </div>
+    </div>
+
+    {% if board_list%} 
+        <div class="boards">
+            {% for board in board_list%}
+                <div class="card card-body" onClick="boardView(`{{'board.id'}}`)">
+                    <p class="card-title" id="title">{{board.name}}</p>
+                    <p class="card-meal" id="meal">{{board.meal}}</p>
+                    <p class="card-hCounter" id="hCounter">{{board.hCounter}}</p>
+                    <p class="card-time" id="time">{{board.time}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="center_down">
+        {% block paging%}
+        {% endblock%}
+
+        <form name="create_btn" action="/create" method="post">
+            <input type="submit" value="revise" name="revise" />
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'home_center.html' %} {% block paging %}
+<ul class="pagination justify-content-center">
+  <!-- 이전페이지 -->
+  {% if board_list.has_prev %}
+  <li class="page-item">
+    <a
+      class="page-link"
+      data-page="{{ board_list.prev_num }}"
+      href="javascript:void(0)"
+      >이전</a
+    >
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a
+      class="page-link"
+      tabindex="-1"
+      aria-disabled="true"
+      href="javascript:void(0)"
+      >이전</a
+    >
+  </li>
+  {% endif %} {% for page_num in board_list.iter_pages() %} {% if page_num %} {%
+  if page_num != board_list.page %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ page_num }}" href="javascript:void(0)"
+      >{{ page_num }}</a
+    >
+  </li>
+  {% else %}
+  <li class="page-item active" aria-current="page">
+    <a class="page-link" href="#">{{ page_num }}</a>
+  </li>
+  {% endif %} {% else %}
+  <li class="disabled">
+    <a class="page-link" href="javascript:void(0)">...</a>
+  </li>
+  {% endif %} {% endfor %}
+
+  <!-- 다음페이지 -->
+  {% if board_list.has_next %}
+  <li class="page-item">
+    <a
+      class="page-link"
+      data-page="{{ board_list.next_num }}"
+      href="javascript:void(0)"
+      >다음</a
+    >
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a
+      class="page-link"
+      tabindex="-1"
+      aria-disabled="true"
+      href="javascript:void(0)"
+      >다음</a
+    >
+  </li>
+  {% endif %}
+</ul>
+<!-- 페이징처리 끝 -->
+{% endblock %}

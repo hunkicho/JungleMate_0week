@@ -9,6 +9,10 @@ app.secret_key = "week0Blue3"
 client = MongoClient('localhost', 27017)  
 db = client.week0  # 'week0'라는 이름의 db를 만들거나 사용합니다.
 
+board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
+       {"id":2, "name":"c", "meal":"cc","hCounter":2,"time":"오후2시"}]
+
+
 @app.route('/loginform')
 def loginform():
     return render_template('loginform.html')
@@ -18,8 +22,9 @@ def main():
     #session.pop('id',None)
     sess_check() #세션체크 메소드
     sess_id = session['id'] #세션 체크
+    
+    return render_template("main.html", boards=board, id = sess_id)
 
-    return render_template('main.html',id = sess_id)
 
 @app.route('/boardView')
 def boardView():
