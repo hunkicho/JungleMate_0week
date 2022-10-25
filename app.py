@@ -6,8 +6,10 @@ from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스�
 app = Flask(__name__)
 app.secret_key = "week0Blue3"
 
-client = MongoClient('localhost', 27017)  
+client = MongoClient('mongodb+srv://test:sparta@cluster0.cbhgxgw.mongodb.net/?retryWrites=true&w=majority')
 db = client.week0  # 'week0'라는 이름의 db를 만들거나 사용합니다.
+
+print(db)
 
 board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
        {"id":2, "name":"c", "meal":"cc","hCounter":2,"time":"오후2시"}]
