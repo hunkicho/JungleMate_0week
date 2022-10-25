@@ -151,11 +151,11 @@ def obj_decode(list):
     
 @app.route('/create', methods=['POST'])
 def create_room():
-    title_receive = request.form['title_give']
-    date_receive = request.form['date_give']
-    time_receive = request.form['time_give']
-    people_receive = request.form['people_give']    
-    comment_receive = request.form['comment_give']
+    title_receive = request.form['title']
+    date_receive = request.form['date']
+    time_receive = request.form['time']
+    people_receive = request.form['people']    
+    comment_receive = request.form['comment']
 
     result = db.board.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive}).inserted_id
     getId = db.board.find_one(result)
