@@ -121,7 +121,6 @@ def login():
         print("성공")  #일치하는 값이 있으면
         session['id'] = result['id'] #세션에 아이디로 정보 저장
         return main() #메인페이지로 이동
-        
 
 def sess_check():
     sess_id = session['id'] #세션값 가져오기
@@ -136,6 +135,18 @@ def obj_decode(list):
         doc['_id'] = str(doc['_id'])
         results.append(doc)
     return results
+    
+@app.route('/create', methods=['POST'])
+def create_room():
+    title_receive = request.form['title_give']
+    date_receive = request.form['date_give']
+    time_receive = request.form['time_give']
+    people_receive = request.form['people_give']    
+    comment_receive = request.form['comment_give']
+
+    db.room_info.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive})
+
+    return boardView()  
 
 
 if __name__ == '__main__':
