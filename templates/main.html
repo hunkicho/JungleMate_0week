@@ -73,19 +73,15 @@
           <div class="center_tail">
             <ul class="pageul">
               
-              {%if (paging.pageGroup-1)>0%}
+              {% if paging.prev%}
               <li><a href="/main/{{paging.currentPage-1}}">이전</a></li>
-              {%endif%}
-            
-              {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
-              {%if paging.currentPage == i%}
+              {% endif %}
+
+              {% for i in range(paging.startPage, paging.endPage+1)%}
               <li><a href="/main/{{i}}">{{i}}</a></li>
-              {%else%}
-              <li><a href="/main/{{i}}">{{i}}</a></li>
-              {%endif%} 
               {% endfor %}
 
-              {%if paging.last<(paging.totalData/paging.dataperPage)%}
+              {% if paging.next%}
               <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
               {%endif%}
               

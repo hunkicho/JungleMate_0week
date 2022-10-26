@@ -57,19 +57,37 @@ def main(page_idx=1):
     else:
         board_list = list(db.board.find({}))
     
+    pageNum=4
+    postsPerPage=8
+    totalBoard=len(board_list)
+    totalPage= (totalBoard-1)//postsPerPage+1
+    
+    endPage=(((int(page_idx)-1)/pageNum)+1)*pageNum
+    if totalPage < endPage:
+        endPage=totalPage
+        
+    startPage=((int(page_idx)-1)/pageNum)*pageNum+1
+    
+    if startPage ==1 : prev=False 
+    else: prev=True
+    
+    if endPage ==totalPage : next=False 
+    else: next=True
+    
+    page_board=board_list[(int(page_idx)-1)*postsPerPage+1:int(page_idx)*postsPerPage+1]
+    
     paging_data={
-                "currentPage":int(page_idx),
-                "pageCount":4,
-                "dataperPage":8,
-                "totalData":len(board_list),
-                "pageGroup":int(page_idx)//4+1,
-                "last": (int(page_idx)//4+1)*4
+        "prev":prev,
+        "next":next,
+        
+        "startPage": int(startPage),
+        "endPage": int(endPage),
+        
+        "currentPage": int(page_idx)
                 }
     
-    if paging_data['last'] > paging_data['totalData']//paging_data['dataperPage']+1:
-        paging_data['last']=paging_data['totalData']//paging_data['dataperPage']+1
-
-    page_board=board_list[(((int(page_idx)-1)*8+1))-1 : (int(page_idx)*8)]
+   
+    
     
     return render_template("main.html", board_list=page_board, id = sess_id, paging=paging_data)
 
