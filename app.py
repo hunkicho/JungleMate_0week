@@ -15,7 +15,10 @@ db = client.week0  # 'week0'라는 이름의 db를 만들거나 사용합니다.
 
 board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
        {"id":2, "name":"c", "meal":"cc","hCounter":2,"time":"오후2시"}]
-
+       
+@app.route('/')
+def home():
+    return render_template('loginform.html')
 
 @app.route('/loginform')
 def loginform():
