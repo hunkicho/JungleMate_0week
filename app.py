@@ -164,8 +164,6 @@ def create_room():
 
     result = db.board.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive}).inserted_id
     getId = db.board.find_one(result)
-
-    db.join.insert_one({'user_id':'test3','board_id':getId['_id']})
     
     return redirect(url_for('boardView', board_id = str(getId['_id'])))
 
