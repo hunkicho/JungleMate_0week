@@ -62,7 +62,7 @@ def main(page_idx=1):
     totalBoard=len(board_list)
     totalPage= (totalBoard-1)//postsPerPage+1
 
-    if page_idx > totalPage:
+    if int(page_idx) > totalPage:
         return redirect(url_for('main', page_idx = 1))
     
     endPage=(((int(page_idx)-1)/pageNum)+1)*pageNum
