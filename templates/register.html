@@ -1,0 +1,45 @@
+<html>
+    <head>
+        {% include 'commonhead.html' %}
+        {% include 'commonscript.html' %}
+        <style type="text/css">
+            *
+            body{
+                background-color: #F3F2ED;
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <form name="registerForm" action="/register" method="post">
+            <div>
+                <label for="name">이름:</label>
+                <input name="name" type="text" class="form-control" placeholder="이름">
+            </div>
+            <div>
+                <label for="phone">전화번호:</label>
+                <input name="phone" type="text" class="form-control" placeholder="번호">
+            </div>
+            <div>
+                <label for="email">이메일:</label>
+                <input name="email" type="text" class="form-control" placeholder="이메일">
+            </div>
+            <div>
+                <label for="id">ID:</label>
+                <input name="id" type="text" class="form-control" placeholder="ID">
+            </div>
+            <div>
+                <label for="password">비밀번호:</label>
+                <input name="password" type="password" class="form-control" placeholder="비밀번호">
+            </div>
+            <div>
+                <label for="password-check">비밀번호 확인:</label>
+                <input name="password-check" type="password" class="form-control" placeholder="비밀번호 확인">
+            </div>
+            <button type="submit" class="btn btn-primary">등록하기</button>
+        </form>
+    </body>
+</html>
