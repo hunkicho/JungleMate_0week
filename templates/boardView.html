@@ -12,7 +12,8 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
-
+        {% include 'commonhead.html' %}
+        {% include 'commonscript.html' %}
         <script>
             function comment_delete(comment_id,board_id){
                 location.href = '/comment_delete/' + comment_id + "/" + board_id
@@ -24,6 +25,8 @@
         hr { border-top:1px solid #F12121 } 
     </style>
     <body>
+        {% include 'commonbodystart.html' %}
+
         <div id="main">
             <div id="image">
 
@@ -87,5 +90,7 @@
                   </div>
             </div>
         </div>
+        {% include 'commonbodyend.html' %}
+        
     </body>
 </html>

@@ -22,15 +22,29 @@ def loginform():
 def boot():
     return render_template('about.html')
 
-@app.route('/main/<page_idx>')
+@app.route('/main/<page_idx>', methods=['POST','GET'] )
 def main(page_idx=1):
     #session.pop('id',None)
     sess_check() #세션체크 메소드
     sess_id = session['id'] #세션 체크
     
-    board_list=list(db.board.find({}))
+    kw = ""
+    searchType =  ""
+
+    if request.method == "POST":
+        kw = request.form['search_kw'] 
+        searchType = request.form['searchType']
+
+    if kw is not None and kw != "":
+        if searchType is not None and searchType != "":
+            board_list = list(db.board.find({searchType : {"$regex" : kw}}))
+        else:
+            board_list = list(db.board.find({"$or" :[{"title":{"$regex" : kw}}, {"comment":{"$regex" : kw}}, {"writer": {"$regex" : kw}}]}))
+    else:
+        board_list = list(db.board.find({}))
     
-    paging_data={"currentPage":int(page_idx),
+    paging_data={
+                "currentPage":int(page_idx),
                 "pageCount":4,
                 "dataperPage":8,
                 "totalData":len(board_list),
@@ -40,9 +54,9 @@ def main(page_idx=1):
     
     if paging_data['last'] > paging_data['totalData']//paging_data['dataperPage']+1:
         paging_data['last']=paging_data['totalData']//paging_data['dataperPage']+1
-    
-    page_board=board_list[(int(page_idx)-1)*8+1:int(page_idx)*8]
 
+    page_board=board_list[(((int(page_idx)-1)*8+1))-1 : (int(page_idx)*8)-1]
+    
     return render_template("main.html", board_list=page_board, id = sess_id, paging=paging_data)
 
 
