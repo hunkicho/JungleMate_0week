@@ -26,7 +26,7 @@
             </div>
             <div>
                 <label for="phone">전화번호:</label>
-                <input name="phone" type="text" class="form-control" placeholder="번호">
+                <input name="phone" type="text" class="form-control" placeholder="전화번호">
             </div>
             <div>
                 <label for="email">이메일:</label>
@@ -46,8 +46,18 @@
             </div>
             <p></p>
             <div style="display: flex; justify-content: center;">
-                <button type="submit" class="btn btn-primary">등록하기</button>
+                <button type="submit" class="btn btn-primary">가입하기</button>
             </div>
         </form>
+        <div>
+            <a href="loginform">로그인</a>
+        </div>
     </body>
 </html>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+            alert("{{messages[-1]}}")
+        </script>
+    {% endif %}
+{% endwith %}
