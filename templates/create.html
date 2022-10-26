@@ -60,6 +60,68 @@
         }
 
     </style>
+    <script>
+        const getResInfo = (target) => {
+            // 선택한 option의 value 값
+            console.log(target.value);
+            obj_id = target.value
+  
+            // option의 text 값
+            console.log(target.options[target.selectedIndex].text);
+
+            if(obj_id != null && obj_id != "..." ){
+                $.ajax({
+                    type: "POST", // POST 방식으로 요청하겠다.
+                    url: "/getResInfo", // /memo라는 url에 요청하겠다.
+                    data: {obj_id: obj_id}, // 데이터를 주는 방법
+                    success: function (response) { // 성공하면
+                        if (response["result"] == "success") {
+                            res = response["info"][0]
+                            console.log(res.ad)
+                            if(res.ad == "True"){
+                                console.log(res.ad)
+                                document.getElementById('delivery').checked = true;
+                            }else{
+                                document.getElementById('delivery').checked = false;
+                            }
+
+                            if(res.image){
+                                $("#id_img").attr("src", res.image);
+                                document.getElementById('rest_img').value = res.image
+                                document.getElementById('img_div').style.display = "block"
+                            }else{
+                                document.getElementById('img_div').style.display = "none"
+                            }
+
+                            document.getElementById('res_name').text = res.name
+                            document.getElementById('rest_name').value = res.name
+                            document.getElementById('res_addr').innerHTML = res.add
+                            document.getElementById('rest_addr').value = res.add
+
+                        } else {
+                            alert("서버 오류!")
+                        }
+                    }
+                })
+            }else{
+                document.getElementById('img_div').style.display = "none";
+                document.getElementById('delivery').checked = false;
+            }
+
+
+            
+        }
+
+        $(document).ready(function(){
+            $("#delivery").change(function(){
+                if($("#delivery").is(":checked")){
+                    document.getElementById('rest_addr').value = "Y"
+                }else{
+                    document.getElementById('rest_addr').value = "N"
+                }
+    });
+});
+    </script>
 </head>
 
 <body class="wrap">
@@ -84,15 +146,29 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">식당 카테고리</label>
                 </div>
-                <select class="custom-select" id="inputGroupSelect01">
+                <select class="custom-select" id="inputGroupSelect01" onchange="getResInfo(this)">
                     <option selected>...</option>
-                    <option value="1">고기 구이</option>
-                    <option value="2">이탈리안</option>
-                    <option value="3">한식</option>
-                    <option value="3">중식</option>
-                    <option value="3">일식</option>
+                    {% for item in resList %}
+                    <option value="{{item['_id']}}">{{item['name']}}</option>
+                    {% endfor %}
                 </select>
             </div>
+        </div>
+
+        <div style="display: none;" id="img_div">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+                <div class="card-body d-flex flex-column align-items-start">
+                  <h3 class="mb-0">
+                    <a id="res_name"></a>
+                    <input type="hidden" id="rest_name" name="rest_name" value="">
+                  </h3><br>
+                  <div class="mb-1 text-muted">주소</div>
+                  <p class="card-text mb-auto" id="res_addr"></p>
+                  <input type="hidden" id="rest_addr" name="rest_addr" value="">
+                </div>
+                <img id="id_img" height="200px" width="200px" class="card-img-right flex-auto d-none d-md-block"  alt="Thumbnail [200x250]" style="width: 200px; height: 250px;" src="" data-holder-rendered="true">
+                <input type="hidden" id="rest_img" name="rest_img" value="">
+              </div>
         </div>
     
         <hr class="border">
@@ -108,7 +184,8 @@
                 모집인원&nbsp;<input name="people" type="number" class="form-control" required>
             </div>
             <div style="margin-top: 30px;" class="header">
-                <input type="checkbox" name="delivery"> 배달여부
+                <input type="hidden" id="deliveryYN" name="deliveryYN" value="">
+                <input type="checkbox" id="delivery" name="delivery"> 배달여부
             </div>
         </div>
     

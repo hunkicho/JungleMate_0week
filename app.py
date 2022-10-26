@@ -110,11 +110,16 @@ def boardView(board_id):
             btn_color = "btn btn-primary"
             btn_text = "참여불가 " + str(join_count) + "/" + str(result['people'])
 
+    if result['delivery'] == "true":
+        delivery = "배달가능"
+    else:
+        delivery = "배달불가"
+
 
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
 
 
-    return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list, join_count = join_count,disabled = disabled)
+    return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list, join_count = join_count,disabled = disabled, delivery = delivery)
 
 @app.route('/join_put', methods=['POST'])
 def join_put():
@@ -172,8 +177,21 @@ def go_create_page():
         return redirect(url_for('loginform')) #세션체크
     sess_id = session['id']
 
-    return render_template('create.html')
+    resList = list(db.restaurant.find({}))
 
+    return render_template('create.html',resList = resList)
+
+@app.route('/getResInfo',  methods=['POST'])
+def getResInfo():
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
+
+    receive_obj_id = ObjectId(request.form['obj_id'])
+    result = obj_decode(list(db.restaurant.find({'_id' : receive_obj_id})))
+    print(result)
+
+    return jsonify({'result': 'success', 'info': result})
 
 @app.route('/login',  methods=['POST','GET'])
 def login():
@@ -324,7 +342,27 @@ def create_room():
     people_receive = request.form['people']    
     comment_receive = request.form['comment']
 
-    insert_input = {'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive, 'reg_date' : datetime.now(), 'writer' : sess_id}
+    rest_name = request.form['rest_name']
+    rest_img = request.form['rest_img']
+    rest_addr = request.form['rest_addr']
+    get_delivery = request.form.get('delivery')
+
+    if get_delivery == None:
+        delivery = "false"
+    else:
+        delivery = "true"
+
+    print(delivery)
+    # delivery = "false"
+    # if request.form['delivery']:
+    #     delivery = "true"
+ 
+
+    insert_input = {
+                    'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 
+                    'comment' : comment_receive, 'reg_date' : datetime.now(), 'writer' : sess_id, 'res_name' : rest_name,
+                    'rest_img' : rest_img, 'rest_addr' : rest_addr , 'delivery' : delivery
+                    }
 
     result = db.board.insert_one(insert_input).inserted_id
     getId = db.board.find_one(result)

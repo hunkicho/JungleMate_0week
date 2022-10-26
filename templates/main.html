@@ -42,7 +42,7 @@
                 </form>
               </div>
           </div>
-      
+          <hr/>
           {% if board_list%} 
               <div class="boards">
                   {% for board in board_list%}
@@ -64,30 +64,32 @@
               </div>
           {% endif %}
       
-          <div class="center_down">
-            <ul id="pagingul">
-              <tr>
+          <div class="create_board">
+            <form name="create_btn" action="/go_create_page" method="post">
+              <input type="submit" value="+" name="create" />
+            </form>
+          </div>
+          
+          <div class="center_tail">
+            <ul class="pageul">
+              
               {%if (paging.pageGroup-1)>0%}
-              <td><li><a herf="/main/{{paging.currentPage-1}}">이전</a></li></td>
+              <li><a href="/main/{{paging.currentPage-1}}">이전</a></li>
               {%endif%}
             
               {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
               {%if paging.currentPage == i%}
-              <td><li class='on'><a href="/main/{{i}}">{{i}}</a></li></td>
+              <li><a href="/main/{{i}}">{{i}}</a></li>
               {%else%}
-              <td><li><a href="/main/{{i}}">{{i}}</a></li></td>
+              <li><a href="/main/{{i}}">{{i}}</a></li>
               {%endif%} 
               {% endfor %}
 
               {%if paging.last<(paging.totalData/paging.dataperPage)%}
-              <td><li><a href="/main/{{paging.currentPage+1}}">다음</a></li></td>
+              <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
               {%endif%}
-              </tr>
+              
             </ul>
-      
-              <form name="create_btn" action="/go_create_page" method="post">
-                  <input type="submit" value="create" name="create" />
-              </form>
           </div>
       
       </div>

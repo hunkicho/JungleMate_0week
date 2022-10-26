@@ -11746,7 +11746,7 @@ body {
 
 .center {
   width: 100vh;
-  height: 100vh;
+  height: 90vh;
 
   display: flex;
   flex-direction: column;
@@ -11754,7 +11754,7 @@ body {
 
 .center .center_head {
   width: 100vh;
-  height: 20vh;
+  height: 50vh;
 
   display: flex;
   flex-direction: row;
@@ -11806,19 +11806,56 @@ body {
   margin-top: 1%;
 }
 
+#logout_li{
+  font-weight: 900;
+  font-size: larger;
+  color: #000;
+}
+
+.pageul {
+  padding-inline-start: 0px !important ;
+  list-style: none;
+  /* float: left; */
+  display: inline;
+}
+.pageul li {
+  float: left;
+}
+.pageul li a {
+  float: left;
+  padding: 4px;
+  margin-right: 3px;
+  width: 15px;
+  color: #000;
+  font: bold 20px tahoma;
+  border: 1px solid #eee;
+  text-align: center;
+  text-decoration: none;
+}
+.pageul li a:hover,
+.pageul li a:focus {
+  color: #fff;
+  border: 1px solid #f40;
+  background-color: #f40;
+}
+
 .boards {
-  height: 70vh;
-
+  height: 100vh;
   display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 25% 25% 25% 25%;
-
+  grid-template-columns: repeat(2, 400px);
+  grid-template-rows: repeat(4, 130px);
   padding-left: 3%;
   padding-right: 3%;
+  justify-content: center;
 }
 .boards .card {
   margin-bottom: 3px;
   margin-right: 3px;
+}
+
+
+.center_tail  {
+  height: 30vh;
 }
 
 .center_tail > ul {
@@ -11828,19 +11865,23 @@ body {
   justify-content: center;
 }
 
-.center_tail > form {
+.create_board > form {
+  float:right;
+  margin-top: 2%;
+  margin-right: 7.5% ;
   margin-bottom: 10px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  font-size: x-large;
 }
 
-.center_tail > form > input {
+.create_board > form > input {
   color: white;
   background-color: #004056;
   border-radius: 10% !important;
+  padding: 0px 20px 0px 20px;
 }
 
 
@@ -11848,7 +11889,7 @@ body {
 .boards .card .cst2 .elm1 {
   text-align: left;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .boards .card .cst2 .elm2 {
@@ -11877,7 +11918,7 @@ body {
 ul {
   text-align: center;
   display: inline-block;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-right: 0;
 }
 
