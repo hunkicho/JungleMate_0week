@@ -22,9 +22,15 @@
 
     </head>
     <style>
-        hr { border-top:1px solid #F12121 } 
+        hr { border-top:1px solid #E5D3AD } 
+        #span_btn { opacity: 0.6;}
+        #comment_list { color: black; }
+        /* button {background-color: #004056 !important; border-color: #004056 !important;  color:white !important;} */
     </style>
-    <body>
+    <body style="background-color:#F3F2ED ;">
+        <div class="wrap" style="display: flex;">
+
+        
         {% include 'commonbodystart.html' %}
 
         <div id="main">
@@ -35,7 +41,7 @@
                 <div class="col-md-6">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">صورة مصغرة</text></svg>
+                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">asd</text></svg>
                         </div>  
                         <div class="col p-4 flex-column position-static">
                             <div class="lh-base me-md-2">
@@ -51,20 +57,23 @@
                                 </div>
                             </div>
                             <hr>
-                            <strong class="d-inline-block mb-0 text-success">본문{{ result['content'] }}</strong>
+                            <h5>{{ result['comment'] }}</h5>
                             <hr>
                             <div class="mb-1 text-muted">
                                 참여자
                                 {% for item in join_list %}
                                 <div class="d-inline-block bgGreen">
-                                    {{ item['user_id'] }}
+                                    <span class="label label-default">{{ item['user_id'] }}</span>
                                 </div>
                                 {% endfor %}
                             </div>
                             <hr>
                             <form name="join_status" action="{{ btn_route }}" method="post">
                                 <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
-                                <button type="submit" class="{{ btn_color }}">{{ btn_text }}</button>
+                                {% if id == result['writer'] %}
+                                {% else %}
+                                <button type="submit" {{ disabled }} class="{{ btn_color }}">{{ btn_text }}</button>
+                                {% endif %}
                             </form>
                             <br>
                             <br>
@@ -73,16 +82,19 @@
                                 <hr>
                                 {% for item in comment_list %}
                                 <div id="">
-                                    {{ item['comment'] }}
+                                    <span id="comment_list">{{ item['comment'] }}</span>
                                     {% if id == item['user_id'] %}
-                                    <span onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
+                                    <span id="span_btn" onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
                                     {% endif %}
                                 </div>
                                 {% endfor %}
+                                <br/>
                                 <form name="comment_put" action="/comment_put" method="post">
                                     <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
-                                    <textarea name="comment" class="form-control d-inline-block" placeholder="댓글 입력하기"></textarea>
-                                    <button type="submit" class="{{ btn_color }} btn_sm d-inline-block">작성</button>
+                                    <div style="display: flex;">
+                                        <textarea name="comment" class="form-control d-inline-block" placeholder="댓글 입력하기" style="width: 85%;"></textarea>
+                                        <button type="submit" class="btn btn-primary btn_sm d-inline-block">작성</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -91,6 +103,6 @@
             </div>
         </div>
         {% include 'commonbodyend.html' %}
-        
+    </div>
     </body>
 </html>
