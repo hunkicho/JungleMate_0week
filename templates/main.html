@@ -47,10 +47,18 @@
               <div class="boards">
                   {% for board in board_list%}
                   <div class="card card-body" onClick="boardView(`{{board['_id']}}`)">
-                      <p class="card-title" id="title">{{board['subject']}}</p>
-                      <p class="card-meal" id="meal">{{board['content']}}</p>
-                      <p class="card-hCounter" id="hCounter">{{board['writer']}}</p>
-                      <!-- <p class="card-time" id="time">{{board.time}}</p> -->
+                      <div class='cst2'>
+                        <div class="elm1"><p class="card-title" id="title">{{board['title']}}</p></div>
+                        <div class="elm2">
+                          <p class="card-writer" id="writer">{{board['writer']}}</p>
+                          <p class="card-people" id="people">모집인원: {{board['people']}}</p>
+                        </div>
+                        <div class="elm3">
+                          <p class="card-date" id="date">{{board['date']}}</p>
+                          <p class="card-time" id="time">{{board['time']}}</p>
+                        </div>
+                      </div>
+
                   </div>
               {% endfor %}
               </div>
@@ -58,25 +66,23 @@
       
           <div class="center_down">
             <ul id="pagingul">
-              <!--페이지 이전 -->
+              <tr>
               {%if (paging.pageGroup-1)>0%}
-              <li><a herf="/main/{{paging.currentPage-1}}">이전</a></li>
+              <td><li><a herf="/main/{{paging.currentPage-1}}">이전</a></li></td>
               {%endif%}
             
-              <!--페이지 번호 표시-->
-              <!--마지막 페이지의 경우-->
               {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
               {%if paging.currentPage == i%}
-              <li><a href="/main/{{i}}">{{i}}</a></li>
+              <td><li class='on'><a href="/main/{{i}}">{{i}}</a></li></td>
               {%else%}
-              <li><a href="/main/{{i}}">{{i}}</a></li>
+              <td><li><a href="/main/{{i}}">{{i}}</a></li></td>
               {%endif%} 
               {% endfor %}
-            
-              <!--페이지 다음-->
+
               {%if paging.last<(paging.totalData/paging.dataperPage)%}
-              <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
+              <td><li><a href="/main/{{paging.currentPage+1}}">다음</a></li></td>
               {%endif%}
+              </tr>
             </ul>
       
               <form name="create_btn" action="/go_create_page" method="post">
