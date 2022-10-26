@@ -11806,7 +11806,7 @@ body {
   margin-top: 1%;
 }
 
-#logout_li{
+#logout_li {
   font-weight: 900;
   font-size: larger;
   color: #000;
@@ -11853,8 +11853,7 @@ body {
   margin-right: 3px;
 }
 
-
-.center_tail  {
+.center_tail {
   height: 30vh;
 }
 
@@ -11865,10 +11864,14 @@ body {
   justify-content: center;
 }
 
+.onpage {
+  background-color: #bd5d38;
+}
+
 .create_board > form {
-  float:right;
+  float: right;
   margin-top: 2%;
-  margin-right: 7.5% ;
+  margin-right: 7.5%;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -11883,8 +11886,6 @@ body {
   border-radius: 10% !important;
   padding: 0px 20px 0px 20px;
 }
-
-
 
 .boards .card .cst2 .elm1 {
   text-align: left;

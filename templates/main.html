@@ -78,7 +78,11 @@
               {% endif %}
 
               {% for i in range(paging.startPage, paging.endPage+1)%}
+              {%if paging.currentPage == i%}
+              <li><a class="onpage" href="/main/{{i}}">{{i}}</a></li>
+              {% else %}
               <li><a href="/main/{{i}}">{{i}}</a></li>
+              {% endif %}
               {% endfor %}
 
               {% if paging.next%}
