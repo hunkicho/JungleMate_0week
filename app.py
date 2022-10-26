@@ -9,7 +9,6 @@ app.secret_key = "week0Blue3"
 client = MongoClient('mongodb+srv://test:sparta@cluster0.cbhgxgw.mongodb.net/?retryWrites=true&w=majority')
 db = client.week0  # 'week0'라는 이름의 db를 만들거나 사용합니다.
 
-print(db)
 
 board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
        {"id":2, "name":"c", "meal":"cc","hCounter":2,"time":"오후2시"}]
@@ -22,8 +21,9 @@ def loginform():
 @app.route('/main')
 def main():
     #session.pop('id',None)
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
     board = obj_decode(list(db.board.find({})))
 
     return render_template("main.html", board_list=board, id = sess_id)
@@ -31,8 +31,9 @@ def main():
 
 @app.route('/boardView/<board_id>')
 def boardView(board_id):
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
 
     obj_id = ObjectId(board_id)
     result = db.board.find_one({'_id' : obj_id})
@@ -64,15 +65,15 @@ def boardView(board_id):
         btn_route = "/join_put"
 
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
-    print(comment_list)
 
 
     return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list)
 
 @app.route('/join_put', methods=['POST'])
 def join_put():
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
     receive_board_id = ObjectId(request.form['board_id'])
 
     insert_input = {'user_id' : sess_id, 'board_id' : receive_board_id}
@@ -82,8 +83,9 @@ def join_put():
 
 @app.route('/join_delete', methods=['POST'])
 def join_delete():
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
     receive_board_id = ObjectId(request.form['board_id'])
 
     delete_input = {'user_id' : sess_id, 'board_id' : receive_board_id}
@@ -93,8 +95,9 @@ def join_delete():
 
 @app.route('/comment_put', methods=['POST'])
 def comment_put():
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
     receive_board_id = ObjectId(request.form['board_id'])
     receive_comment = request.form['comment']
 
@@ -105,8 +108,9 @@ def comment_put():
 
 @app.route('/comment_delete/<comment_id>')
 def comment_delete(comment_id):
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
     receive_comment_id = ObjectId(comment_id)
 
     delete_input = {'user_id' : sess_id, '_id' : receive_comment_id}
@@ -116,8 +120,9 @@ def comment_delete(comment_id):
 
 @app.route('/go_create_page',  methods=['POST'])
 def go_create_page():
-    sess_check() #세션체크 메소드
-    sess_id = session['id'] #세션 체크
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
 
     return render_template('create.html')
 
@@ -130,19 +135,16 @@ def login():
     result = db.users.find_one({'id' : receive_id, 'password' : receive_password},{'_id' : False, 'id' : True}) #id와 pw가 일치하는 값 찾기
 
     if result == None: #일치하는 값이 없을 경우
-        print("실패")
         return render_template('loginform.html')
-    else:
-        print("성공")  #일치하는 값이 있으면
+    else:  #일치하는 값이 있으면
         session['id'] = result['id'] #세션에 아이디로 정보 저장
         return redirect(url_for('main')) #메인페이지로 이동
 
 def sess_check():
-    sess_id = session['id'] #세션값 가져오기
-    if sess_id == "": #없으면 로그인 페이지로
-        return render_template('loginform.html')
+    if 'id' not in session: #없으면 로그인 페이지로
+        return False
     else:
-        return "1"
+        return True
 
 def obj_decode(list):
     results = []

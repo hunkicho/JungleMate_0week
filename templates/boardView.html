@@ -36,15 +36,15 @@
                         </div>  
                         <div class="col p-4 flex-column position-static">
                             <div class="lh-base me-md-2">
-                                <h3 class="mb-0">{{ result['subject'] }}</h3>
+                                <h3 class="mb-0">{{ result['title'] }}</h3>
                             </div>
                             <hr>
                             <div class="lh-base d-inline-block" >
                                 <div class="d-inline-block mr-5">
-                                    <h5>모집인원 : {{result['count']}} 명</h5>
+                                    <h5>모집인원 : {{ result['people'] }} 명</h5>
                                 </div>
                                 <div class="d-inline-block">
-                                    <h5>모집시간 : {{result['count']}} </h5>
+                                    <h5>모집시간 : {{ result['date']  + result['time'] }} </h5>
                                 </div>
                             </div>
                             <hr>
