@@ -1,8 +1,10 @@
+import smtplib
 from unittest import result
-from flask import Flask, render_template, jsonify, request, session, redirect ,url_for
+from flask import Flask, render_template, jsonify, request, session, redirect ,url_for, flash
 from bson.objectid import ObjectId #str인 _id를 obj로 변환
 from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스톨 먼저 해야겠죠?)
 from datetime import datetime
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 app.secret_key = "week0Blue3"
@@ -181,6 +183,7 @@ def login():
     result = db.users.find_one({'id' : receive_id, 'password' : receive_password},{'_id' : False, 'id' : True}) #id와 pw가 일치하는 값 찾기
 
     if result == None: #일치하는 값이 없을 경우
+        flash("일치하는 ID와 PW의 조합이 없습니다. 다시 입력하세요!")
         return render_template('loginform.html')
     else:  #일치하는 값이 있으면
         session['id'] = result['id'] #세션에 아이디로 정보 저장
@@ -197,16 +200,104 @@ def register():
         receive_password_check = request.form['password-check']  # 클라이언트로부터 password-check 받는 부분
 
         if receive_password != receive_password_check:
+            flash("The passwords do not match, please re-enter the password!")
             return render_template('register.html')
-        elif db.board.find({'id' : receive_id}) is not None:
+        elif db.users.find_one({'id' : receive_id}) is not None:
+            flash("The ID entered already exists!")
             return render_template('register.html')
         elif len(receive_password) < 8:
+            flash("Password has to be at least 8 characters!")
             return render_template('register.html')
         else:  #조건이 전부 만족한 경우
+            flash("Your account has been created!")
             db.users.insert_one({'id' : receive_id, 'password' : receive_password, 'name': receive_name, 'phone': receive_phone, 'email': receive_email})
             return render_template('loginform.html')
     else:
         return render_template('register.html')
+
+@app.route('/findId',  methods=['POST','GET'])
+def findId():
+    if request.method == 'POST':
+        receive_name = request.form['name']
+        receive_email = request.form['email']
+        
+        user_email_db = db.users.find_one({'email': receive_email})
+        print(user_email_db)
+        if user_email_db is not None:
+            user_email = user_email_db['email']
+            user_name = user_email_db['name']
+            user_id = user_email_db['id']
+
+            if user_name == receive_name:
+                print('passed')
+            else:
+                flash("Entered name and email does not match!")
+                return render_template('findId.html')
+        else:
+            flash("Enter a valid email address!")
+            return render_template('findId.html')
+
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s.starttls()
+        s.login('swlee6507@gmail.com', 'uxbdbhjxwybunsng')
+
+        # text = input("enter a string to convert into ascii values:")
+        # ascii_values = []
+        # for character in text:
+        #     ascii_values.append(ord(character))
+        # print(ascii_values)
+
+        # 보낼 메시지 설정
+        msg = MIMEText('Your ID is: ' + user_id)
+        msg['Subject'] = 'Your ID'
+
+        s.sendmail("swlee6507@gmail.com", user_email, msg.as_string())
+        s.quit()
+        flash("Your ID has been sent to the given email address!")
+        
+        return render_template('loginform.html')
+    else:
+        return render_template('findId.html')
+
+@app.route('/findPw',  methods=['POST','GET'])
+def findPw():
+    if request.method == 'POST':
+        receive_id = request.form['id']
+        receive_email = request.form['email']
+
+        user_email_db = db.users.find_one({'email': receive_email})
+
+        if user_email_db is not None:
+            user_email = user_email_db['email']
+            user_password = user_email_db['password']
+            user_id = user_email_db['id']
+
+            if user_id == receive_id:
+                print('passed')
+            else:
+                flash("Entered ID and email does not match!")
+                return render_template('findId.html')
+        else:
+            flash("Enter a valid email address!")
+            return render_template('findId.html')
+
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s.starttls()
+        s.login('swlee6507@gmail.com', 'uxbdbhjxwybunsng')
+
+        # 보낼 메시지 설정
+        msg = MIMEText('Your PW is: ' + user_password)
+        msg['Subject'] = 'Your PW'
+
+        s.sendmail("swlee6507@gmail.com", user_email, msg.as_string())
+        s.quit()
+        
+        flash("Your PW has been sent to the given email address!")
+                
+        return render_template('loginform.html')
+    else:
+        return render_template('findPw.html')
+
 
 def sess_check():
     if 'id' not in session: #없으면 로그인 페이지로
