@@ -17,6 +17,10 @@ board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
 @app.route('/loginform')
 def loginform():
     return render_template('loginform.html')
+    
+@app.route('/boot')
+def boot():
+    return render_template('about.html')
 
 @app.route('/main')
 def main():
