@@ -104,10 +104,10 @@ def comment_put():
     insert_input = {'user_id' : sess_id, 'board_id' : receive_board_id, 'comment' : receive_comment}
     db.comment.insert_one(insert_input)
 
-    return redirect(url_for('boardView'))
+    return redirect(url_for('boardView', board_id = str(receive_board_id)))
 
-@app.route('/comment_delete/<comment_id>')
-def comment_delete(comment_id):
+@app.route('/comment_delete/<comment_id>/<board_id>')
+def comment_delete(comment_id,board_id):
     if sess_check() == False:
         return redirect(url_for('loginform')) #세션체크
     sess_id = session['id']
@@ -116,7 +116,8 @@ def comment_delete(comment_id):
     delete_input = {'user_id' : sess_id, '_id' : receive_comment_id}
     db.comment.delete_many(delete_input)
 
-    return redirect(url_for('boardView'))
+    return redirect(url_for('boardView', board_id = board_id))
+
 
 @app.route('/go_create_page',  methods=['POST'])
 def go_create_page():

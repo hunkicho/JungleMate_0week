@@ -14,8 +14,8 @@
         crossorigin="anonymous"></script>
 
         <script>
-            function comment_delete(_id){
-                location.href = '/comment_delete/' + _id
+            function comment_delete(comment_id,board_id){
+                location.href = '/comment_delete/' + comment_id + "/" + board_id
             }
         </script>
 
@@ -44,7 +44,7 @@
                                     <h5>모집인원 : {{ result['people'] }} 명</h5>
                                 </div>
                                 <div class="d-inline-block">
-                                    <h5>모집시간 : {{ result['date']  + result['time'] }} </h5>
+                                    <h5>모집시간 : {{ result['date']  + " " + result['time'] }} </h5>
                                 </div>
                             </div>
                             <hr>
@@ -72,7 +72,7 @@
                                 <div id="">
                                     {{ item['comment'] }}
                                     {% if id == item['user_id'] %}
-                                    <span onclick="comment_delete(`{{ item['_id'] }}`)">삭제</span>
+                                    <span onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
                                     {% endif %}
                                 </div>
                                 {% endfor %}
