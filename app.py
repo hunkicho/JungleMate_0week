@@ -23,6 +23,10 @@ def loginform():
 def boot():
     return render_template('about.html')
 
+@app.route('/main')
+def goMain():
+    return redirect(url_for('main', page_idx = 1))
+
 @app.route('/main/<page_idx>', methods=['POST','GET'] )
 def main(page_idx=1):
     #session.pop('id',None)
