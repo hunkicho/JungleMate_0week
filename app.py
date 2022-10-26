@@ -2,6 +2,7 @@ from unittest import result
 from flask import Flask, render_template, jsonify, request, session, redirect ,url_for
 from bson.objectid import ObjectId #str인 _id를 obj로 변환
 from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스톨 먼저 해야겠죠?)
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "week0Blue3"
@@ -81,24 +82,32 @@ def boardView(board_id):
     #db.comment.insert_one({'user_id' : 'test1', 'board_id' : obj_id, 'comment' : '안녕하세요 test1 입니다.'})
     
     join_check = db.join.find_one({'board_id' : obj_id, 'user_id' : sess_id})
+    join_count = len(list(db.join.find({"board_id" : obj_id})))
+    print(join_count)
 
     btn_color = ""
     btn_text = ""
     btn_route = ""
+    disabled = ""
 
     if join_check:
         btn_color = "btn btn-danger"
-        btn_text = "취소하기"
+        btn_text = "취소하기 " + str(join_count) + "/" + str(result['people'])
         btn_route = "/join_delete"
     else:
         btn_color = "btn btn-primary"
-        btn_text = "참여하기"
+        btn_text = "참여하기 " + str(join_count) + "/" + str(result['people'])
         btn_route = "/join_put"
+        if join_count >= int(result['people']):
+            disabled = "disabled"
+            btn_text = "참여불가 " + str(join_count) + "/" + str(result['people'])
+
+    
 
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
 
 
-    return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list)
+    return render_template('boardView.html',id = sess_id,result = result, join_list = join_list, btn_color = btn_color, btn_text = btn_text, btn_route = btn_route, comment_list = comment_list, join_count = join_count,disabled = disabled)
 
 @app.route('/join_put', methods=['POST'])
 def join_put():
@@ -187,14 +196,23 @@ def obj_decode(list):
     
 @app.route('/create', methods=['POST'])
 def create_room():
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
+
     title_receive = request.form['title']
     date_receive = request.form['date']
     time_receive = request.form['time']
     people_receive = request.form['people']    
     comment_receive = request.form['comment']
 
-    result = db.board.insert_one({'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive}).inserted_id
+    insert_input = {'title' : title_receive, 'date' : date_receive, 'time' : time_receive, 'people' : people_receive, 'comment' : comment_receive, 'reg_date' : datetime.now(), 'writer' : sess_id}
+
+    result = db.board.insert_one(insert_input).inserted_id
     getId = db.board.find_one(result)
+
+    insert_input = {'user_id' : sess_id, 'board_id' : result}
+    db.join.insert_one(insert_input)
     
     return redirect(url_for('boardView', board_id = str(getId['_id'])))
 
