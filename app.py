@@ -74,7 +74,7 @@ def main(page_idx=1):
     if endPage ==totalPage : next=False 
     else: next=True
     
-    page_board=board_list[(int(page_idx)-1)*postsPerPage+1:int(page_idx)*postsPerPage+1]
+    page_board=board_list[(int(page_idx)-1)*postsPerPage:int(page_idx)*postsPerPage]
     
     paging_data={
         "prev":prev,
