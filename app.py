@@ -19,9 +19,10 @@ board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
 def loginform():
     return render_template('loginform.html')
     
-@app.route('/boot')
+@app.route('/logout')
 def boot():
-    return render_template('about.html')
+    session.pop('id',None)
+    return redirect(url_for('loginform'))
 
 @app.route('/main')
 def goMain():
