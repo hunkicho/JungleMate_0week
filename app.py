@@ -179,6 +179,28 @@ def login():
         session['id'] = result['id'] #세션에 아이디로 정보 저장
         return redirect(url_for('main', page_idx=1)) #메인페이지로 이동
 
+@app.route('/register',  methods=['POST','GET'])
+def register():
+    if request.method == 'POST':
+        receive_name = request.form['name']  # 클라이언트로부터 name 받는 부분
+        receive_phone = request.form['phone']  # 클라이언트로부터 phone 받는 부분
+        receive_email = request.form['email']  # 클라이언트로부터 email 받는 부분
+        receive_id = request.form['id'].lower()  # 클라이언트로부터 id 받는 부분
+        receive_password = request.form['password']  # 클라이언트로부터 password 받는 부분
+        receive_password_check = request.form['password-check']  # 클라이언트로부터 password-check 받는 부분
+
+        if receive_password != receive_password_check:
+            return render_template('register.html')
+        elif db.board.find({'id' : receive_id}) is not None:
+            return render_template('register.html')
+        elif len(receive_password) < 8:
+            return render_template('register.html')
+        else:  #조건이 전부 만족한 경우
+            db.users.insert_one({'id' : receive_id, 'password' : receive_password, 'name': receive_name, 'phone': receive_phone, 'email': receive_email})
+            return render_template('loginform.html')
+    else:
+        return render_template('register.html')
+
 def sess_check():
     if 'id' not in session: #없으면 로그인 페이지로
         return False
