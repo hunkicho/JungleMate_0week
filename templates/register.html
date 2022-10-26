@@ -9,12 +9,17 @@
                 display:flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
+                justify-content: baseline;
             }
         </style>
     </head>
     <body>
+        <div>
+            <h3 class="content">Dining Friends</h1>
+        </div>
+
         <form name="registerForm" action="/register" method="post">
+            <hr>
             <div>
                 <label for="name">이름:</label>
                 <input name="name" type="text" class="form-control" placeholder="이름">
@@ -39,7 +44,10 @@
                 <label for="password-check">비밀번호 확인:</label>
                 <input name="password-check" type="password" class="form-control" placeholder="비밀번호 확인">
             </div>
-            <button type="submit" class="btn btn-primary">등록하기</button>
+            <p></p>
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary">등록하기</button>
+            </div>
         </form>
     </body>
 </html>

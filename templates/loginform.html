@@ -1,13 +1,48 @@
 <html>
+    <head>
+        {% include 'commonhead.html' %}
+        {% include 'commonscript.html' %}
+        <style type="text/css">
+            *
+            body{
+                background-color: #F3F2ED;
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: baseline;
+            }
+            
+            .border{
+                height: 1px;
+                background-color: #2C858D;
+                border: none;
+            }
+            
+        </style>
+    </head>
     <body>
+        <div>
+            <h3 class="content">Dining Friends</h1>
+        </div>
+
         <form name="loginForm" action="/login" method="post">
-            <input type="text" name="id">
-            <input type="password" name="password">
-            <input type="submit" value="submit">
+            <hr>
+            <div>
+                <label for="id">ID:</label>
+                <input name="id" type="text" class="form-control" placeholder="ID">
+            </div>
+            <div>
+                <label for="password">비밀번호:</label>
+                <input name="password" type="password" class="form-control" placeholder="비밀번호">
+            </div>
+            <p></p>
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-primary">로그인</button>
+            </div>
         </form>
 
         <form name="registerForm" action="/register" method="get">
-            <input type="submit" value="회원가입">
+            <button type="submit" class="btn btn-primary">회원가입</button>
         </form>
     </body>
 </html>
