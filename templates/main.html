@@ -15,75 +15,83 @@
   </head>
 
   <body>
-    {% include 'commonbodystart.html' %}
-    <div class="center">
-        <div class="center_head">
-            <div class="homeIMG">
-                <a href="/main">
-                    <img src="">JUNGLE MATE</img>
-                </a>
-            </div>
-            
-            <div class="input-group">
-              <form name="main" action="/main/1" method="post"> 
-                <div class="input-group">
-                  <input type="text" name="search_kw" class="form-control" value="{{ kw or '' }}">
-                  <select name="searchType">
-                    <option value="">검색</option>
-                    <option value="title">제목</option>
-                    <option value="writer">작성자</option>
-                    <option value="comment">내용</option>
-                  </select>
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">찾기</button>
+    <div class='wrap'>
+      {% include 'commonbodystart.html' %}
+      <div class="center">
+          <div class="center_head">
+              <div class="homeIMG">
+                  <a href="/main">
+                      <img src="">JUNGLE MATE</img>
+                  </a>
+              </div>
+              
+              <div class="input-group">
+                <form name="main" action="/main/1" method="post"> 
+                  <div class="input-group">
+                    <input type="text" name="search_kw" class="form-control" value="{{ kw or '' }}">
+                    <select name="searchType">
+                      <option value="">검색</option>
+                      <option value="title">제목</option>
+                      <option value="writer">작성자</option>
+                      <option value="comment">내용</option>
+                    </select>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit">찾기</button>
+                    </div>
                   </div>
-                </div>
+                </form>
+              </div>
+          </div>
+      
+          {% if board_list%} 
+              <div class="boards">
+                  {% for board in board_list%}
+                  <div class="card card-body" onClick="boardView(`{{board['_id']}}`)">
+                      <div class='cst2'>
+                        <div class="elm1"><p class="card-title" id="title">{{board['title']}}</p></div>
+                        <div class="elm2">
+                          <p class="card-writer" id="writer">{{board['writer']}}</p>
+                          <p class="card-people" id="people">모집인원: {{board['people']}}</p>
+                        </div>
+                        <div class="elm3">
+                          <p class="card-date" id="date">{{board['date']}}</p>
+                          <p class="card-time" id="time">{{board['time']}}</p>
+                        </div>
+                      </div>
+
+                  </div>
+              {% endfor %}
+              </div>
+          {% endif %}
+      
+          <div class="center_down">
+            <ul id="pagingul">
+              <tr>
+              {%if (paging.pageGroup-1)>0%}
+              <td><li><a herf="/main/{{paging.currentPage-1}}">이전</a></li></td>
+              {%endif%}
+            
+              {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
+              {%if paging.currentPage == i%}
+              <td><li class='on'><a href="/main/{{i}}">{{i}}</a></li></td>
+              {%else%}
+              <td><li><a href="/main/{{i}}">{{i}}</a></li></td>
+              {%endif%} 
+              {% endfor %}
+
+              {%if paging.last<(paging.totalData/paging.dataperPage)%}
+              <td><li><a href="/main/{{paging.currentPage+1}}">다음</a></li></td>
+              {%endif%}
+              </tr>
+            </ul>
+      
+              <form name="create_btn" action="/go_create_page" method="post">
+                  <input type="submit" value="create" name="create" />
               </form>
-            </div>
-        </div>
-    
-        {% if board_list%} 
-            <div class="boards">
-                {% for board in board_list%}
-                <div class="card card-body" onClick="boardView(`{{board['_id']}}`)">
-                    <p class="card-title" id="title">{{board['subject']}}</p>
-                    <p class="card-meal" id="meal">{{board['content']}}</p>
-                    <p class="card-hCounter" id="hCounter">{{board['writer']}}</p>
-                    <!-- <p class="card-time" id="time">{{board.time}}</p> -->
-                </div>
-            {% endfor %}
-            </div>
-        {% endif %}
-    
-        <div class="center_down">
-          <ul id="pagingul">
-            <!--페이지 이전 -->
-            {%if (paging.pageGroup-1)>0%}
-            <li><a herf="/main/{{paging.currentPage-1}}">이전</a></li>
-            {%endif%}
-          
-            <!--페이지 번호 표시-->
-            <!--마지막 페이지의 경우-->
-            {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
-            {%if paging.currentPage == i%}
-            <li><a href="/main/{{i}}">{{i}}</a></li>
-            {%else%}
-            <li><a href="/main/{{i}}">{{i}}</a></li>
-            {%endif%} 
-            {% endfor %}
-          
-            <!--페이지 다음-->
-            {%if paging.last<(paging.totalData/paging.dataperPage)%}
-            <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
-            {%endif%}
-          </ul>
-    
-            <form name="create_btn" action="/go_create_page" method="post">
-                <input type="submit" value="create" name="create" />
-            </form>
-        </div>
-    
+          </div>
+      
+      </div>
+      {% include 'commonbodyend.html' %}
     </div>
-    {% include 'commonbodyend.html' %}
   </body>
 </html>
