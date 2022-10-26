@@ -103,9 +103,11 @@ def boardView(board_id):
         btn_color = "btn btn-primary"
         btn_text = "참여하기 " + str(join_count) + "/" + str(result['people'])
         btn_route = "/join_put"
-        if join_count >= int(result['people']):
+        if join_count >= int(result['people']) or datetime.now() > datetime.strptime(result['date'] + " " + result['time'], '%Y-%m-%d %H:%M'):
             disabled = "disabled"
+            btn_color = "btn btn-primary"
             btn_text = "참여불가 " + str(join_count) + "/" + str(result['people'])
+
 
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
 

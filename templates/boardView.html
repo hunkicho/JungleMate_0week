@@ -82,6 +82,7 @@
                                 <hr>
                                 {% for item in comment_list %}
                                 <div id="">
+                                    <span class="badge badge-Success">{{ item['user_id'] }}</span>
                                     <span id="comment_list">{{ item['comment'] }}</span>
                                     {% if id == item['user_id'] %}
                                     <span id="span_btn" onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
