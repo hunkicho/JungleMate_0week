@@ -18,10 +18,12 @@ board=[{"id":1, "name":"a", "meal":"b","hCounter":5,"time":"오후5시"},
        
 @app.route('/')
 def home():
+    session.pop('id',None)
     return render_template('loginform.html')
 
 @app.route('/loginform')
 def loginform():
+    session.pop('id',None)
     return render_template('loginform.html')
     
 @app.route('/logout')
