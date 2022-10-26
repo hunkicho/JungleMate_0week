@@ -38,7 +38,8 @@ def goMain():
 @app.route('/main/<page_idx>', methods=['POST','GET'] )
 def main(page_idx=1):
     #session.pop('id',None)
-    sess_check() #세션체크 메소드
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
     sess_id = session['id'] #세션 체크
     
     kw = ""
