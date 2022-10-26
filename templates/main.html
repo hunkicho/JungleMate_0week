@@ -48,11 +48,30 @@
         {% endif %}
     
         <div class="center_down">
-            {% block paging%}
-            {% endblock%}
+          <ul id="pagingul">
+            <!--페이지 이전 -->
+            {%if (paging.pageGroup-1)>0%}
+            <li><a herf="/main/{{paging.currentPage-1}}">이전</a></li>
+            {%endif%}
+          
+            <!--페이지 번호 표시-->
+            <!--마지막 페이지의 경우-->
+            {% for i in range(((paging.pageGroup-1)*paging.pageCount+1),paging.last+1)%} 
+            {%if paging.currentPage == i%}
+            <li><a href="/main/{{i}}">{{i}}</a></li>
+            {%else%}
+            <li><a href="/main/{{i}}">{{i}}</a></li>
+            {%endif%} 
+            {% endfor %}
+          
+            <!--페이지 다음-->
+            {%if paging.last<(paging.totalData/paging.dataperPage)%}
+            <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
+            {%endif%}
+          </ul>
     
             <form name="create_btn" action="/go_create_page" method="post">
-                <input type="submit" value="revise" name="revise" />
+                <input type="submit" value="create" name="create" />
             </form>
         </div>
     

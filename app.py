@@ -22,15 +22,28 @@ def loginform():
 def boot():
     return render_template('about.html')
 
-@app.route('/main')
-def main():
+@app.route('/main/<page_idx>')
+def main(page_idx=1):
     #session.pop('id',None)
-    if sess_check() == False:
-        return redirect(url_for('loginform')) #세션체크
-    sess_id = session['id']
-    board = obj_decode(list(db.board.find({})))
+    sess_check() #세션체크 메소드
+    sess_id = session['id'] #세션 체크
+    
+    board_list=list(db.board.find({}))
+    
+    paging_data={"currentPage":int(page_idx),
+                "pageCount":4,
+                "dataperPage":8,
+                "totalData":len(board_list),
+                "pageGroup":int(page_idx)//4+1,
+                "last": (int(page_idx)//4+1)*4
+                }
+    
+    if paging_data['last'] > paging_data['totalData']//paging_data['dataperPage']+1:
+        paging_data['last']=paging_data['totalData']//paging_data['dataperPage']+1
+    
+    page_board=board_list[(int(page_idx)-1)*8+1:int(page_idx)*8]
 
-    return render_template("main.html", board_list=board, id = sess_id)
+    return render_template("main.html", board_list=page_board, id = sess_id, paging=paging_data)
 
 
 @app.route('/boardView/<board_id>')
@@ -143,7 +156,7 @@ def login():
         return render_template('loginform.html')
     else:  #일치하는 값이 있으면
         session['id'] = result['id'] #세션에 아이디로 정보 저장
-        return redirect(url_for('main')) #메인페이지로 이동
+        return redirect(url_for('main', page_idx=1)) #메인페이지로 이동
 
 def sess_check():
     if 'id' not in session: #없으면 로그인 페이지로
