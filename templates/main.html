@@ -74,7 +74,7 @@
             <ul class="pageul">
               
               {% if paging.prev%}
-              <li><a href="/main/{{paging.currentPage-1}}">이전</a></li>
+              <li><a href="/main/{{paging.currentPage-1}}"><</a></li>
               {% endif %}
 
               {% for i in range(paging.startPage, paging.endPage+1)%}
@@ -82,7 +82,7 @@
               {% endfor %}
 
               {% if paging.next%}
-              <li><a href="/main/{{paging.currentPage+1}}">다음</a></li>
+              <li><a href="/main/{{paging.currentPage+1}}">></a></li>
               {%endif%}
               
             </ul>
