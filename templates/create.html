@@ -63,7 +63,7 @@
 <body class="wrap">
     {% include 'commonbodystart.html' %}
     <div class="header">
-        <h3 class="content">기본정보</h1>
+        <h3 class="mb-0">기본정보</h3>
     </div>
     
     <hr class="border">
@@ -71,7 +71,7 @@
     <form name="create_room" action="/create" method="post">
         <div class="box">
             <div class="input-group mb-3">
-                제목&nbsp;&nbsp;&nbsp;<input name="title" type="text" class="form-control" placeholder="제목을 입력하세요">
+                제목&nbsp;&nbsp;&nbsp;<input name="title" type="text" class="form-control" placeholder="제목을 입력하세요" required>
             </div>
         </div>
     
@@ -97,13 +97,13 @@
     
         <div class="line">
             <div class="header">
-                만나는날&nbsp;<input name="date" type="date" class="form-control" value="2022-12-25">
+                만나는날&nbsp;<input name="date" type="date" class="form-control" value="2022-12-25" required>
             </div>
             <div class="header">
-                시간&nbsp;<input name="time" type="time" class="form-control" value="00:00">
+                시간&nbsp;<input name="time" type="time" class="form-control" value="00:00" required>
             </div>
             <div style="width: 150px; padding: 10px;">
-                모집인원&nbsp;<input name="people" type="number" class="form-control">
+                모집인원&nbsp;<input name="people" type="number" class="form-control" required>
             </div>
             <div style="margin-top: 30px;" class="header">
                 <input type="checkbox" name="delivery"> 배달여부
@@ -117,7 +117,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">코멘트</span>
                 </div>
-                <textarea name="comment" class="form-control" rows="3" placeholder="내용을 입력하세요"></textarea>
+                <textarea name="comment" class="form-control" rows="3" placeholder="내용을 입력하세요" required></textarea>
             </div>    
         </div>
     
