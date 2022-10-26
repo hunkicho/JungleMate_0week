@@ -4896,6 +4896,7 @@ textarea.form-control-lg {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
+  background-color: #004056;
 }
 .badge:empty {
   display: none;
@@ -11329,6 +11330,125 @@ p.lead {
   font-weight: 500;
   font-size: 1.5rem;
 }
+
+/* customCSS start */
+body {
+  display: flex;
+
+  width: 100%;
+  height: 100% !important;
+  background-color: #f3f2ed;
+}
+
+.wrap {
+  width: 75%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  margin: auto 10% auto 10%;
+}
+
+.center {
+  width: 100vh;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.center .center_head {
+  width: 100vh;
+  height: 20vh;
+
+  display: flex;
+  flex-direction: row;
+
+  margin: 3% auto auto auto;
+}
+
+.center .center_head .homeIMG {
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.center .center_head .input-group .input-group {
+  width: 70%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  position: absolute;
+  bottom: 0px;
+  right: 3%;
+}
+
+.input-group {
+  justify-content: flex-end;
+}
+
+.input-group > input {
+  margin: auto 10px auto 0px;
+}
+.input-group > input {
+  margin: auto 5px auto 0px;
+}
+.input-group > select {
+  margin: auto 5px auto 0px;
+}
+.input-group-append {
+  margin: auto 10px auto 0px;
+}
+.input-group-append > button {
+  background-color: #004056;
+  color: white;
+  border-radius: 10%;
+}
+
+.hr {
+  height: 3px;
+  margin: 3%;
+  margin-top: 1%;
+}
+
+.boards {
+  height: 70vh;
+
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 25% 25% 25% 25%;
+
+  padding-left: 3%;
+  padding-right: 3%;
+}
+.boards .card {
+  margin-bottom: 3px;
+  margin-right: 3px;
+}
+
+.center_tail > ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.center_tail > form {
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.center_tail > form > input {
+  color: white;
+  background-color: #004056;
+  border-radius: 10% !important;
+}
+/* customCSS end */
 
 #sideNav {
   padding-left: 1rem;

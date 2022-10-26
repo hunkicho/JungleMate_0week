@@ -56,7 +56,7 @@ def main(page_idx=1):
     if paging_data['last'] > paging_data['totalData']//paging_data['dataperPage']+1:
         paging_data['last']=paging_data['totalData']//paging_data['dataperPage']+1
 
-    page_board=board_list[(((int(page_idx)-1)*8+1))-1 : (int(page_idx)*8)-1]
+    page_board=board_list[(((int(page_idx)-1)*8+1))-1 : (int(page_idx)*8)]
     
     return render_template("main.html", board_list=page_board, id = sess_id, paging=paging_data)
 
@@ -69,7 +69,7 @@ def boardView(board_id):
 
     obj_id = ObjectId(board_id)
     result = db.board.find_one({'_id' : obj_id})
-    join_list = obj_decode(list(db.join.find({'board_id' : obj_id})))
+    join_list = obj_decode(list(db.join.find({'board_id' : obj_id}).sort("reg_date",-1)))
 
     #db.users.insert_one({'name':'test2','phone':'010-2222-2222','email':'test2@gmail.com','id':'test2','password':'test2'})
     #db.users.insert_one({'name':'test3','phone':'010-3333-3333','email':'test3@gmail.com','id':'test3','password':'test3'})
@@ -102,8 +102,6 @@ def boardView(board_id):
             disabled = "disabled"
             btn_text = "참여불가 " + str(join_count) + "/" + str(result['people'])
 
-    
-
     comment_list = obj_decode(list(db.comment.find({'board_id' : obj_id})))
 
 
@@ -116,7 +114,7 @@ def join_put():
     sess_id = session['id']
     receive_board_id = ObjectId(request.form['board_id'])
 
-    insert_input = {'user_id' : sess_id, 'board_id' : receive_board_id}
+    insert_input = {'user_id' : sess_id, 'board_id' : receive_board_id, 'reg_date' : datetime.now()}
     db.join.insert_one(insert_input)
 
     return redirect(url_for('boardView', board_id = str(receive_board_id)))
