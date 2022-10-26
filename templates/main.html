@@ -21,7 +21,7 @@
           <div class="center_head">
               <div class="homeIMG">
                   <a href="/main">
-                      <img src="">JUNGLE MATE</img>
+                      <img src="{{ url_for('static', filename='logo.png') }}" width="150px" height="100px"></img>
                   </a>
               </div>
               
@@ -50,7 +50,7 @@
                       <div class='cst2'>
                         <div class="elm1"><p class="card-title" id="title">{{board['title']}}</p></div>
                         <div class="elm2">
-                          <p class="card-writer" id="writer">{{board['writer']}}</p>
+                          <span class="card-writer badge badge-primary" id="writer" style="height: 80%;">{{board['writer']}}</span>
                           <p class="card-people" id="people">모집인원: {{board['people']}}</p>
                         </div>
                         <div class="elm3">

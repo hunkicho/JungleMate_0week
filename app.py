@@ -372,6 +372,18 @@ def create_room():
     
     return redirect(url_for('boardView', board_id = str(getId['_id'])))
 
+@app.route('/board_delete', methods=['POST'])
+def board_delete():
+    if sess_check() == False:
+        return redirect(url_for('loginform')) #세션체크
+    sess_id = session['id']
+    receive_board_id = ObjectId(request.form['board_id'])
+
+    delete_input = {'_id' : receive_board_id}
+    db.board.delete_one(delete_input)
+
+    return redirect(url_for('goMain'))
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)

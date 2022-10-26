@@ -41,7 +41,15 @@
                 <div class="col-md-6">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" style="height: 100vh; width: 100vh;">
                         <div class="col-auto d-none d-lg-block">
-                            <img src="{{ result['rest_img'] }}" width="200" height="280">
+                            <img src="{{ result['rest_img'] }}" width="200" height="280"><br/><br/><br/>
+                            {% if id ==  result['writer'] %}
+                            <form name="board_delete" action="/board_delete" method="post">
+                                <div style="display: flex; justify-content: center;">
+                                    <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
+                                    <button type="submit" class="btn btn-danger btn_sm d-inline-block">글 삭제</button>
+                                </div>
+                            </form>
+                            {% endif %}
                             <!-- <p>{{ result['res_name'] }}</p>
                             <p>{{ result['rest_addr'] }}</p> -->
                         </div>  
@@ -82,23 +90,25 @@
                             </form>
                             <br>
                             <br>
-                            <div id="comment">
+                            <div id="comment" >
                                 <h3>댓글</h3>
                                 <hr>
-                                {% for item in comment_list %}
-                                <div id="">
-                                    <span class="badge badge-Success">{{ item['user_id'] }}</span>
-                                    <span id="comment_list">{{ item['comment'] }}</span>
-                                    {% if id == item['user_id'] %}
-                                    <span id="span_btn" onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
-                                    {% endif %}
+                                <div id="scroll" style="height: 100px; overflow: auto">
+                                    {% for item in comment_list %}
+                                    <div id="" >
+                                        <span class="badge badge-Success">{{ item['user_id'] }}</span>
+                                        <span id="comment_list">{{ item['comment'] }}</span>
+                                        {% if id == item['user_id'] %}
+                                        <span id="span_btn" onclick="comment_delete(`{{ item['_id'] }}`,`{{ result['_id'] }}`)">삭제</span>
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                                 <br/>
                                 <form name="comment_put" action="/comment_put" method="post">
                                     <input type="hidden" name="board_id" value="{{ result['_id'] }}"/>
                                     <div style="display: flex;">
-                                        <textarea name="comment" class="form-control d-inline-block" placeholder="댓글 입력하기" style="width: 90%;" required></textarea>
+                                        <textarea name="comment" class="form-control d-inline-block" placeholder="댓글 입력하기" style="width: 90%;" maxlength="70" required></textarea>
                                         <button type="submit" class="btn btn-primary btn_sm d-inline-block">작성</button>
                                     </div>
                                 </form>
