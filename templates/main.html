@@ -28,13 +28,13 @@
               <div class="input-group">
                 <form name="main" action="/main/1" method="post"> 
                   <div class="input-group">
-                    <input type="text" name="search_kw" class="form-control" value="{{ kw or '' }}">
                     <select name="searchType">
                       <option value="">검색</option>
                       <option value="title">제목</option>
                       <option value="writer">작성자</option>
                       <option value="comment">내용</option>
                     </select>
+                    <input type="text" name="search_kw" class="form-control" value="{{ kw or '' }}">
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="submit">찾기</button>
                     </div>
@@ -42,7 +42,9 @@
                 </form>
               </div>
           </div>
-          <hr/>
+          
+          <hr class="hr"/>
+
           {% if board_list%} 
               <div class="boards">
                   {% for board in board_list%}

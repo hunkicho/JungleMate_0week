@@ -11825,7 +11825,7 @@ body {
   float: left;
   padding: 4px;
   margin-right: 3px;
-  width: 15px;
+  width: 30px;
   color: #000;
   font: bold 20px tahoma;
   border: 1px solid #eee;
@@ -11865,7 +11865,7 @@ body {
 }
 
 .onpage {
-  background-color: #bd5d38;
+  background-color: #c3decc;
 }
 
 .create_board > form {
