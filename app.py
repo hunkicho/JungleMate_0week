@@ -51,11 +51,11 @@ def main(page_idx=1):
 
     if kw is not None and kw != "":
         if searchType is not None and searchType != "":
-            board_list = list(db.board.find({searchType : {"$regex" : kw}}))
+            board_list = list(db.board.find({searchType : {"$regex" : kw}}).sort('reg_date',-1))
         else:
-            board_list = list(db.board.find({"$or" :[{"title":{"$regex" : kw}}, {"comment":{"$regex" : kw}}, {"writer": {"$regex" : kw}}]}))
+            board_list = list(db.board.find({"$or" :[{"title":{"$regex" : kw}}, {"comment":{"$regex" : kw}}, {"writer": {"$regex" : kw}}]}).sort('reg_date',-1))
     else:
-        board_list = list(db.board.find({}))
+        board_list = list(db.board.find({}).sort('reg_date',-1))
     
     pageNum=4
     postsPerPage=8
@@ -102,22 +102,10 @@ def boardView(board_id):
     sess_id = session['id']
 
     obj_id = ObjectId(board_id)
-    result = db.board.find_one({'_id' : obj_id})
+    result = db.board.find_one({'_id' : obj_id}) #게시물 정보
     join_list = obj_decode(list(db.join.find({'board_id' : obj_id}).sort("reg_date",-1)))
-
-    #db.users.insert_one({'name':'test2','phone':'010-2222-2222','email':'test2@gmail.com','id':'test2','password':'test2'})
-    #db.users.insert_one({'name':'test3','phone':'010-3333-3333','email':'test3@gmail.com','id':'test3','password':'test3'})
-    #db.users.insert_one({'name':'test4','phone':'010-4444-4444','email':'test4@gmail.com','id':'test4','password':'test4'})
-    #db.join.insert_one({'user_id':'test4','board_id':obj_id})
-    #db.join.insert_one({'user_id':'test3','board_id':obj_id})
-    #db.comment.insert_one({'user_id' : 'test2', 'board_id' : obj_id, 'comment' : '안녕하세요 test2 입니다.'})
-    #db.comment.insert_one({'user_id' : 'test3', 'board_id' : obj_id, 'comment' : '안녕하세요 test3 입니다.'})
-    #db.comment.insert_one({'user_id' : 'test4', 'board_id' : obj_id, 'comment' : '안녕하세요 test4 입니다.'})
-    #db.comment.insert_one({'user_id' : 'test1', 'board_id' : obj_id, 'comment' : '안녕하세요 test1 입니다.'})
-    
     join_check = db.join.find_one({'board_id' : obj_id, 'user_id' : sess_id})
     join_count = len(list(db.join.find({"board_id" : obj_id})))
-    print(join_count)
 
     btn_color = ""
     btn_text = ""
